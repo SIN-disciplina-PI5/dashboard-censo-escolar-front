@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Input, Button, Result } from 'antd';
+import { Form, Input, Button, Result, Select } from 'antd';
 import axios from 'axios';
 
 const PredictForm = () => {
@@ -21,13 +21,13 @@ const PredictForm = () => {
 
   return (
     <div style={{ maxWidth: '600px', margin: 'auto' }}>
-      <h1 style={{ textAlign: 'center' }}>Machine Learning Predictor</h1>
+      <h1 style={{ textAlign: 'center' }}>Preditor de Machine Learning</h1>
 
       {result !== null ? (
         <Result
           status="success"
-          title="Prediction Result"
-          subTitle={`Prediction: ${result}`}
+          title="Resultado da Previsão"
+          subTitle={`Previsão: ${result}`}
         />
       ) : (
         <Form
@@ -38,42 +38,149 @@ const PredictForm = () => {
           wrapperCol={{ span: 16 }}
         >
           <Form.Item
-            label="Region Code"
+            label="Código da Região"
             name="region-code"
-            rules={[{ required: true, message: 'Please input the region code!' }]}
+            rules={[{ required: true, message: 'Por favor, insira o código da região!' }]}
           >
-            <Input />
+            <Input placeholder="Código da Região" />
           </Form.Item>
 
           <Form.Item
-            label="UF Code"
+            label="Código da UF"
             name="uf-code"
-            rules={[{ required: true, message: 'Please input the UF code!' }]}
+            rules={[{ required: true, message: 'Por favor, insira o código da UF!' }]}
           >
-            <Input />
+            <Input placeholder="Código da UF" />
           </Form.Item>
 
           <Form.Item
-            label="County Code"
+            label="Código do Município"
             name="county-code"
-            rules={[{ required: true, message: 'Please input the county code!' }]}
+            rules={[{ required: true, message: 'Por favor, insira o código do município!' }]}
           >
-            <Input />
+            <Input placeholder="Código do Município" />
           </Form.Item>
 
           <Form.Item
-            label="Meso Region Code"
+            label="Código da Meso Região"
             name="meso-region-code"
-            rules={[{ required: true, message: 'Please input the meso region code!' }]}
+            rules={[{ required: true, message: 'Por favor, insira o código da mesorregião!' }]}
           >
-            <Input />
+            <Input placeholder="Código da Meso Região" />
           </Form.Item>
 
-          {/* Adicione campos semelhantes para outros parâmetros conforme necessário */}
-          
+          <Form.Item
+            label="Código da Microrregião"
+            name="micro-region-code"
+            rules={[{ required: true, message: 'Por favor, insira o código da microrregião!' }]}
+          >
+            <Input placeholder="Código da Microrregião" />
+          </Form.Item>
+
+          <Form.Item
+            label="Código do Distrito"
+            name="district-code"
+            rules={[{ required: true, message: 'Por favor, insira o código do distrito!' }]}
+          >
+            <Input placeholder="Código do Distrito" />
+          </Form.Item>
+
+          <Form.Item
+            label="Código da Escola"
+            name="entity-code"
+            rules={[{ required: true, message: 'Por favor, insira o código da escola!' }]}
+          >
+            <Input placeholder="Código da Escola" />
+          </Form.Item>
+
+          <Form.Item
+            label="Tipo de Dependência"
+            name="dependency-type"
+            rules={[{ required: true, message: 'Por favor, selecione o tipo de dependência!' }]}
+          >
+            <Select placeholder="Selecione">
+              <Select.Option value="federal">Federal</Select.Option>
+              <Select.Option value="municipal">Municipal</Select.Option>
+              <Select.Option value="state">Estadual</Select.Option>
+              <Select.Option value="private">Privada</Select.Option>
+            </Select>
+          </Form.Item>
+
+          <Form.Item
+            label="Tipo de Localização"
+            name="location-type"
+            rules={[{ required: true, message: 'Por favor, selecione o tipo de localização!' }]}
+          >
+            <Select placeholder="Selecione">
+              <Select.Option value="urban">Urbana</Select.Option>
+              <Select.Option value="rural">Rural</Select.Option>
+            </Select>
+          </Form.Item>
+
+          <Form.Item
+            label="Localização Diferenciada"
+            name="diff-location-type"
+            rules={[{ required: true, message: 'Por favor, selecione a localização diferenciada!' }]}
+          >
+            <Select placeholder="Selecione">
+              <Select.Option value="0">Não diferenciada</Select.Option>
+              <Select.Option value="1">Área de assentamento</Select.Option>
+              <Select.Option value="2">Terra indígena</Select.Option>
+              <Select.Option value="3">Comunidade remanescente de quilombos</Select.Option>
+            </Select>
+          </Form.Item>
+
+          <Form.Item
+            label="Vínculo com a Secretaria de Educação"
+            name="education-department-link"
+            rules={[{ required: true, message: 'Por favor, selecione o vínculo com a Secretaria de Educação!' }]}
+          >
+            <Select placeholder="Selecione">
+              <Select.Option value="yes">Sim</Select.Option>
+              <Select.Option value="no">Não</Select.Option>
+              <Select.Option value="na">Não aplicável</Select.Option>
+            </Select>
+          </Form.Item>
+
+          <Form.Item
+            label="Vínculo com a Segurança Pública"
+            name="public-security-link"
+            rules={[{ required: true, message: 'Por favor, selecione o vínculo com a Segurança Pública!' }]}
+          >
+            <Select placeholder="Selecione">
+              <Select.Option value="yes">Sim</Select.Option>
+              <Select.Option value="no">Não</Select.Option>
+              <Select.Option value="na">Não aplicável</Select.Option>
+            </Select>
+          </Form.Item>
+
+          <Form.Item
+            label="Vínculo com a Secretaria de Saúde"
+            name="health-department-link"
+            rules={[{ required: true, message: 'Por favor, selecione o vínculo com a Secretaria de Saúde!' }]}
+          >
+            <Select placeholder="Selecione">
+              <Select.Option value="yes">Sim</Select.Option>
+              <Select.Option value="no">Não</Select.Option>
+              <Select.Option value="na">Não aplicável</Select.Option>
+            </Select>
+          </Form.Item>
+
+          <Form.Item
+            label="Vínculo com Outro Órgão"
+            name="other-department-link"
+            rules={[{ required: true, message: 'Por favor, selecione o vínculo com outro órgão!' }]}
+          >
+            <Select placeholder="Selecione">
+              <Select.Option value="yes">Sim</Select.Option>
+              <Select.Option value="no">Não</Select.Option>
+              <Select.Option value="na">Não aplicável</Select.Option>
+            </Select>
+          </Form.Item>
+
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
             <Button type="primary" htmlType="submit">
-              Predict
+              Prever
             </Button>
           </Form.Item>
         </Form>
