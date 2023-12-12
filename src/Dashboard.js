@@ -1,38 +1,64 @@
 import React, { useState } from 'react';
-import { Layout, Row, Col, Card, Table, Input, Form, Button } from 'antd';
+import { Layout, Row, Col, Card, Table, Input, Form, Button, Upload, message } from 'antd';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from 'recharts';
+import axios from 'axios';
 
 const { Content } = Layout;
 
-const dataMock = [
-  // Adicione mais dados conforme necessário
-  { name: 'Region 1', value: 50 },
-  { name: 'Region 2', value: 30 },
-  { name: 'Region 3', value: 80 },
-];
-
 const Dashboard = () => {
-  const [filteredData, setFilteredData] = useState(dataMock);
-
-  const columns = [
-    { title: 'Region Code', dataIndex: 'regionCode', key: 'regionCode' },
-    { title: 'UF Code', dataIndex: 'ufCode', key: 'ufCode' },
-    { title: 'County Code', dataIndex: 'countyCode', key: 'countyCode' },
-    // Adicione mais colunas conforme necessário
-  ];
+  const [filteredData, setFilteredData] = useState([]);
+  const [csvData, setCsvData] = useState([]);
+  const [fileList, setFileList] = useState([]);
 
   const onFinish = (values) => {
-    // Simular filtragem de dados com base nos valores do formulário
-    const filtered = dataMock.filter(item =>
-      item.name.toLowerCase().includes(values.regionSearch.toLowerCase())
+    const filtered = csvData.filter(item =>
+      item.noEntidade.toLowerCase().includes(values.regionSearch.toLowerCase())
     );
     setFilteredData(filtered);
   };
+
+  const handleUpload = async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const response = await axios.post('http://localhost:8080/school-census/api/csv', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+  
+      if (response.data && response.data.length > 0) {
+        setCsvData(response.data);
+        setFilteredData(response.data);
+        setFileList([file]);
+        message.success('File uploaded successfully');
+      } else {
+        message.warning('Uploaded file is empty or not in the expected format.');
+      }
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      message.error('Error uploading file. Please try again.');
+    }
+  
+    return false;
+  };
+
+  const columns = Object.keys(csvData[0] || {}).map((key) => ({ title: key, dataIndex: key, key }));
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Content style={{ margin: '16px' }}>
         <h1>Dashboard</h1>
+        <Upload
+          beforeUpload={handleUpload}
+          fileList={fileList}
+          showUploadList={false}
+        >
+          <Button style={{ marginBottom: '30px'}}>
+             Upload CSV
+          </Button>
+        </Upload>
         <Row gutter={16}>
           <Col span={8}>
             <Card title="Region Code">{/* Seus dados aqui */}</Card>
@@ -63,12 +89,14 @@ const Dashboard = () => {
           </Col>
           <Col span={12}>
             <Card title="Region Distribution">
-              <BarChart width={400} height={300} data={dataMock}>
-                <XAxis dataKey="name" />
+              <BarChart width={400} height={300} data={csvData}>
+                <XAxis dataKey="noEntidade" />
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="value" fill="#8884d8" />
+                {columns.map((column, index) => (
+                  <Bar key={index} dataKey={column.dataIndex} fill="#8884d8" />
+                ))}
               </BarChart>
             </Card>
           </Col>
