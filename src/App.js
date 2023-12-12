@@ -20,7 +20,7 @@ const App = () => {
               </Link>
             </Menu.Item>
             <Menu.Item key="2">
-              <Link to="/dashboard">
+            <Link to="/form">
                 <span role="img" aria-label="form">
                   📝 Formulário
                 </span>
@@ -33,7 +33,7 @@ const App = () => {
           <Content>
             <Routes>
               <Route path="/" element={<Dashboard />} />
-              <Route path="/dashboard" element={<PredictForm />} />
+              <Route path="/form" element={<PredictForm />} />
             </Routes>
           </Content>
         </Layout>
